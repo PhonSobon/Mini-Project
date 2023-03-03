@@ -83,54 +83,56 @@ public class CondoManagement {
                         } else {
                             System.out.println("floor start form(1-" + floor + ")");
                         }
-//                        if (!isRoomValid || !isFloorValid) {
-//                            System.out.println("-------------------------------------------------");
-//                            System.out.println("Press 1 to exit and press other number to continue...!");
-//                            System.out.println("Choose your option : ");
-//                            buyOption = input.nextInt();
-//                            if (buyOption == 1) {
-//                                isConditionValid = true;
-//                            } else {
-//                                isConditionValid = false;
-//                            }
-//                        }
-
                     } while (!isConditionValid);
                     pressAnyKey();
                     break;
                 case 2:
                     String ownerCondoName;
-                    boolean isConditionValid1 = false;
-                    System.out.println("------------------------- Sell Condo ------------------------");
-                    System.out.print("Enter number of floor (1 - " + floor + ") : ");
-                    desiredFloor = input.nextInt();
-                    System.out.print("Enter number of room (1 - " + room + ") : ");
-                    desiredRoom = input.nextInt();
-                    System.out.println("Selected Condo Information:");
-                    if (desiredFloor > 0 && desiredFloor <= floor && desiredRoom > 0 && desiredRoom <= room) {
-                        if (condo[desiredFloor - 1][desiredRoom - 1] != null) {
-                            System.out.println("Floor: "+floor+ " Room: "+room+" Belong to: "+condo[desiredFloor-1][desiredRoom-1]);
-                            input.nextLine();
-                            ownerCondoName = input.nextLine();
-//                            switch (option)
-                            if (ownerCondoName.equalsIgnoreCase(condo[desiredFloor - 1][desiredRoom - 1])) {
-                                // assign
-                                condo[desiredFloor - 1][desiredRoom - 1] = null;
-                                System.out.println("Congratulation! You sold the condo...!");
-                                isRoomValid = false;
-                            } else {
-                                System.out.println("Error! Valid name is required ");
-                                isRoomValid = false;
+                    int num = 0;
+                    do {
+                        System.out.println("======================== Sell Condo ==========================");
+                        System.out.print("Enter the desire floor for sell : ");
+                        desiredFloor = input.nextInt();
+                        System.out.print("Enter the desire room for sell : ");
+                        desiredRoom = input.nextInt();
+                        if(desiredFloor>0 && desiredFloor<=floor && desiredRoom>0 && desiredRoom<=room){
+                            first:  for(int i=(condo.length-1); i>=0; i--){
+                                for (int j = 0; j < condo[i].length; j++) {
+                                    if(condo[desiredFloor-1][desiredRoom-1]!=null){
+                                        if(condo[desiredFloor-1][desiredRoom-1]==condo[i][j]){
+                                            ownerCondoName = condo[i][j];
+                                            System.out.println(">>> The owner information <<<");
+                                            System.out.println("Floor "+desiredFloor+" : Room "+desiredRoom+" belong to "+ownerCondoName);
+                                            System.out.println("======================================================");
+                                            System.out.print("Press 1 to confirm or 0 to cancel : ");
+                                            num = input.nextInt();
+                                            if(num==1){
+                                                condo[desiredFloor-1][desiredRoom-1]=null;
+                                                System.out.println("Congratulation...! You have sold the condo.");
+                                                isRoomValid = true;
+                                                break first;
+
+                                            }else {
+                                                System.out.println("The plan to sell the condo was cancel...!");
+                                                isRoomValid = true;
+                                            }
+                                        }
+                                    }else {
+                                        System.out.println("This condo does not has the owner yet...!");
+                                        System.out.print("Press 1 to put again and 0 to out : ");
+                                        num = input.nextInt();
+                                        isRoomValid = num != 1;
+                                        break first;
+                                    }
+                                }
                             }
-                        } else {
-                            System.out.println("Sorry! This condo is owning by someone...!");
-                            isRoomValid = false;
+                        }else {
+                            System.out.println("Error! Floor and room are required...!");
+                            System.out.print("Press 1 to put again and 0 to out : ");
+                            num = input.nextInt();
+                           isRoomValid = num != 1;
                         }
-                    } else {
-                        System.out.println("Error! Floor and room are invalid...!");
-                        isRoomValid = false;
-                    }
-                    pressAnyKey();
+                    } while (!isRoomValid);
                     break;
                 case 3:
                     int searchOption = 0;
